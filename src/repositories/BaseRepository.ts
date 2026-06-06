@@ -1,10 +1,10 @@
 class BaseRepository {
-
+    public model: any;
     constructor(model: any){
         this.model = model;
     }
 
-    async findAll(filter = {}, options={}){
+    async findAll(filter = {}, options: any={}){
         const {sort, limit, skip, populate, select} = options;
 
         let query = this.model.find(filter);
@@ -20,7 +20,7 @@ class BaseRepository {
 
     }
 
-    async findById(id, options={}){
+    async findById(id: string, options: any={}){
         const {populate, select} = options;
         
 
@@ -32,7 +32,7 @@ class BaseRepository {
     }
 
 
-    async findOne(filters: any, options={}){
+    async findOne(filters: any, options: any={}){
         const {populate, select} = options;
         
 
