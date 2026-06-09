@@ -1,5 +1,9 @@
 import RestaurantService from "../services/ResturantService";
 import { Request, Response } from "express";
+import HttpStatus from "../constants/HttpStatus";
+import ApiResponse from "../utils/ApiResponse";
+import HTTP_STATUS from "../constants/HttpStatus";
+import MESSAGES from "../constants/Messages";
 
 class RestaurantController {
   private restaurantService: RestaurantService;
@@ -14,16 +18,18 @@ class RestaurantController {
       const restaurant =
         await this.restaurantService.createResturant(restaurantData);
 
-      res.status(201).json({
-        success: true,
-        message: "Restaurant created successfully",
-        data: restaurant,
-      });
+      return ApiResponse.success(
+        res,
+        HTTP_STATUS.CREATED,
+        MESSAGES.CREATED,
+        restaurant,
+      );
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      return ApiResponse.error(
+        res,
+        HTTP_STATUS.INTERNAL_SERVER_ERROR,
+        MESSAGES.INTERNAL_SERVER_ERROR,
+      );
     }
   };
 
@@ -32,26 +38,27 @@ class RestaurantController {
       const { restaurants } = req.body;
 
       if (!Array.isArray(restaurants)) {
-        return res.status(400).json({
-          success: false,
-          message: "Restaurants should be array",
-        });
+        return ApiResponse.error(
+          res,
+          HTTP_STATUS.BAD_REQUEST,
+          MESSAGES.INVALID_PAYLOAD,
+        );
       }
 
       const result =
         await this.restaurantService.createBulkRestaurant(restaurants);
-      const statusCode = result.failed.length === 0 ? 201 : 207;
+      const statusCode =
+        result.failed.length === 0
+          ? HTTP_STATUS.CREATED
+          : HttpStatus.PARTIAL_SUCCESS;
 
-      res.status(statusCode).json({
-        success: true,
-        message: `Bulk operation completed. ${result.created.length} created, ${result.failed.length} failed`,
-        data: result,
-      });
+      return ApiResponse.success(res, statusCode, MESSAGES.CREATED, result);
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      return ApiResponse.error(
+        res,
+        HTTP_STATUS.INTERNAL_SERVER_ERROR,
+        MESSAGES.INTERNAL_SERVER_ERROR,
+      );
     }
   };
 
@@ -71,17 +78,18 @@ class RestaurantController {
         id,
         updateData,
       );
-
-      res.status(201).json({
-        success: true,
-        message: "Restaurant updated successfully",
-        data: restaurant,
-      });
+      return ApiResponse.success(
+        res,
+        HTTP_STATUS.CREATED,
+        MESSAGES.UPDATED,
+        restaurant,
+      );
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      return ApiResponse.error(
+        res,
+        HTTP_STATUS.INTERNAL_SERVER_ERROR,
+        MESSAGES.INTERNAL_SERVER_ERROR,
+      );
     }
   };
 
@@ -89,17 +97,18 @@ class RestaurantController {
     try {
       const id: string = req.params.id as string;
       const restaurant = await this.restaurantService.deletRestaurant(id);
-
-      res.status(200).json({
-        success: true,
-        message: "Restaurant deleted successfully",
-        data: restaurant,
-      });
+      return ApiResponse.success(
+        res,
+        HTTP_STATUS.OK,
+        MESSAGES.DELETED,
+        restaurant,
+      );
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      return ApiResponse.error(
+        res,
+        HTTP_STATUS.INTERNAL_SERVER_ERROR,
+        MESSAGES.INTERNAL_SERVER_ERROR,
+      );
     }
   };
 
@@ -108,26 +117,31 @@ class RestaurantController {
       const { ids } = req.body;
 
       if (!Array.isArray(ids)) {
-        return res.status(400).json({
-          success: false,
-          message: "IDs should be array",
-        });
+        return ApiResponse.error(
+          res,
+          HTTP_STATUS.BAD_REQUEST,
+          MESSAGES.INVALID_IDS_ARRAY,
+        );
       }
 
-      const result =
-        await this.restaurantService.deleteBulkRestaurants(ids);
-      const statusCode = result.failed.length === 0 ? 200 : 207;
+      const result = await this.restaurantService.deleteBulkRestaurants(ids);
+      const statusCode =
+        result.failed.length === 0
+          ? HTTP_STATUS.OK
+          : HttpStatus.PARTIAL_SUCCESS;
 
-      res.status(statusCode).json({
-        success: true,
-        message: `Bulk operation completed. ${result.deleted.length} deleted, ${result.failed.length} failed`,
-        data: result,
-      });
+      return ApiResponse.success(
+        res,
+        statusCode,
+        MESSAGES.BULK_DELETED,
+        result,
+      );
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      return ApiResponse.error(
+        res,
+        HTTP_STATUS.INTERNAL_SERVER_ERROR,
+        MESSAGES.INTERNAL_SERVER_ERROR,
+      );
     }
   };
 }

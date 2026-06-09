@@ -25,7 +25,7 @@ class RestaurantService{
             const savedRestaurant = await this.restaurantRepository.create(restaurantData);
             return savedRestaurant;
         } catch (error: any) {
-                throw new Error('Failed to create new Restaurant:', error.message);
+                throw new Error('Failed to create new Restaurant: '+ error.message);
         }
     }
 
@@ -59,7 +59,7 @@ class RestaurantService{
             const restaurants = await this.restaurantRepository.findAll(filter, options);
             return restaurants;
         } catch (error: any) {
-            throw new Error('Failed to fetch restaurants ',error.message);
+            throw new Error('Failed to fetch restaurants '+ error.message);
         }
     }
 
@@ -71,7 +71,7 @@ class RestaurantService{
             }
             return resturant;
         } catch (error: any) {
-            throw new Error("Failed to fetch restaurant: ", error.message)
+            throw new Error("Failed to fetch restaurant: "+ error.message)
         }
     }
 
@@ -83,7 +83,7 @@ class RestaurantService{
             }
             return resturant;
         } catch (error: any) {
-            throw new Error("Failed to update restaurant: ", error.message)
+            throw new Error("Failed to update restaurant: "+ error.message)
         }
     }
 
@@ -94,7 +94,7 @@ class RestaurantService{
                 throw new Error("Restaurant not found")
             }
         } catch (error: any) {
-            throw new Error("Failed to delete restaurant: ", error.message)
+            throw new Error("Failed to delete restaurant: "+ error.message)
 
         }
     }
