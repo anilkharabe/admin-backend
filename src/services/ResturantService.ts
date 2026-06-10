@@ -1,4 +1,8 @@
 import RestaurantRepository from "../repositories/RestaurantRepository";
+import ConflictError from '../utils/errors/ConflictError';
+import NotFoundError from '../utils/errors/NotFoundError';
+import InternalServerError from '../utils/errors/InternalServerError';
+import MESSAGES from "../constants/Messages";
 
 /**
  * Bussiness logic
@@ -19,13 +23,14 @@ class RestaurantService{
         try {
             const existingResturant = await this.restaurantRepository.findByName(restaurantData.name);
             if(existingResturant){
-                throw new Error('Restuant with this name is already created');
+                // throw new Error('Restuant with this name is already created');
+                throw new ConflictError(MESSAGES.ALREADY_EXISTS);
             }
 
             const savedRestaurant = await this.restaurantRepository.create(restaurantData);
             return savedRestaurant;
         } catch (error: any) {
-                throw new Error('Failed to create new Restaurant: '+ error.message);
+                throw new InternalServerError(MESSAGES.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -59,7 +64,7 @@ class RestaurantService{
             const restaurants = await this.restaurantRepository.findAll(filter, options);
             return restaurants;
         } catch (error: any) {
-            throw new Error('Failed to fetch restaurants '+ error.message);
+            throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
     }
 
@@ -67,11 +72,11 @@ class RestaurantService{
         try {
             const resturant = await this.restaurantRepository.findById(id);
             if(!resturant){
-                throw new Error("Restaurant not found")
+                throw new NotFoundError(MESSAGES.NOT_FOUND);
             }
             return resturant;
         } catch (error: any) {
-            throw new Error("Failed to fetch restaurant: "+ error.message)
+            throw new InternalServerError(MESSAGES.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -79,11 +84,11 @@ class RestaurantService{
         try {
             const resturant = await this.restaurantRepository.updateById(id, updatedData);
             if(!resturant){
-                throw new Error("Restaurant not found")
+                throw new NotFoundError(MESSAGES.NOT_FOUND);
             }
             return resturant;
         } catch (error: any) {
-            throw new Error("Failed to update restaurant: "+ error.message)
+            throw new InternalServerError(MESSAGES.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -91,10 +96,10 @@ class RestaurantService{
         try {
             const restaurant = await this.restaurantRepository.deleteById(id);
             if(!restaurant){
-                throw new Error("Restaurant not found")
+                throw new NotFoundError(MESSAGES.NOT_FOUND);
             }
         } catch (error: any) {
-            throw new Error("Failed to delete restaurant: "+ error.message)
+            throw new InternalServerError(MESSAGES.INTERNAL_SERVER_ERROR)
 
         }
     }

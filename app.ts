@@ -19,4 +19,24 @@ app.get('/health', (req, res)=>{
     })
 })
 
+
+// handling non-existing routes
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "Route not found"
+    });
+});
+
+
+// handling all the uncaught error in application
+app.use((err: any, req: any, res: any, next: any) => {
+    console.error(err);
+
+    res.status(500).json({
+        success: false,
+        message: "Internal Server Error handling by app level error"
+    });
+});
+
 export default app;

@@ -1,6 +1,5 @@
 import RestaurantService from "../services/ResturantService";
 import { Request, Response } from "express";
-import HttpStatus from "../constants/HttpStatus";
 import ApiResponse from "../utils/ApiResponse";
 import HTTP_STATUS from "../constants/HttpStatus";
 import MESSAGES from "../constants/Messages";
@@ -50,7 +49,7 @@ class RestaurantController {
       const statusCode =
         result.failed.length === 0
           ? HTTP_STATUS.CREATED
-          : HttpStatus.PARTIAL_SUCCESS;
+          : HTTP_STATUS.PARTIAL_SUCCESS;
 
       return ApiResponse.success(res, statusCode, MESSAGES.CREATED, result);
     } catch (error: any) {
@@ -128,7 +127,7 @@ class RestaurantController {
       const statusCode =
         result.failed.length === 0
           ? HTTP_STATUS.OK
-          : HttpStatus.PARTIAL_SUCCESS;
+          : HTTP_STATUS.PARTIAL_SUCCESS;
 
       return ApiResponse.success(
         res,
