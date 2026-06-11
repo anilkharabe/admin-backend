@@ -20,18 +20,15 @@ class RestaurantService{
      * @returns 
      */
     async createResturant(restaurantData: any){
-        try {
-            const existingResturant = await this.restaurantRepository.findByName(restaurantData.name);
-            if(existingResturant){
-                // throw new Error('Restuant with this name is already created');
-                throw new ConflictError(MESSAGES.ALREADY_EXISTS);
-            }
-
-            const savedRestaurant = await this.restaurantRepository.create(restaurantData);
-            return savedRestaurant;
-        } catch (error: any) {
-                throw new InternalServerError(MESSAGES.INTERNAL_SERVER_ERROR);
+        const existingResturant = await this.restaurantRepository.findByName(restaurantData.name);
+        if(existingResturant){
+            // throw new Error('Restuant with this name is already created');
+            throw new ConflictError(MESSAGES.ALREADY_EXISTS);
         }
+
+        const savedRestaurant = await this.restaurantRepository.create(restaurantData);
+        return savedRestaurant;
+       
     }
 
     async createBulkRestaurant(restaurantsData: any){

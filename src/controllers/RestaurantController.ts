@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import ApiResponse from "../utils/ApiResponse";
 import HTTP_STATUS from "../constants/HttpStatus";
 import MESSAGES from "../constants/Messages";
+import AsyncHandler from '../middleware/AsyncHandler';
 
 class RestaurantController {
   private restaurantService: RestaurantService;
@@ -11,8 +12,28 @@ class RestaurantController {
     this.restaurantService = new RestaurantService();
   }
 
-  createResturant = async (req: Request, res: Response) => {
-    try {
+  // createResturant = async (req: Request, res: Response) => {
+  //   try {
+  //     const restaurantData = req.body;
+  //     const restaurant =
+  //       await this.restaurantService.createResturant(restaurantData);
+
+  //     return ApiResponse.success(
+  //       res,
+  //       HTTP_STATUS.CREATED,
+  //       MESSAGES.CREATED,
+  //       restaurant,
+  //     );
+  //   } catch (error: any) {
+  //     return ApiResponse.error(
+  //       res,
+  //       HTTP_STATUS.INTERNAL_SERVER_ERROR,
+  //       MESSAGES.INTERNAL_SERVER_ERROR,
+  //     );
+  //   }
+  // };
+
+   createResturant = AsyncHandler(async (req: Request, res: Response) => {
       const restaurantData = req.body;
       const restaurant =
         await this.restaurantService.createResturant(restaurantData);
@@ -23,17 +44,9 @@ class RestaurantController {
         MESSAGES.CREATED,
         restaurant,
       );
-    } catch (error: any) {
-      return ApiResponse.error(
-        res,
-        HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        MESSAGES.INTERNAL_SERVER_ERROR,
-      );
-    }
-  };
+  });
 
-  createBulkResturant = async (req: Request, res: Response) => {
-    try {
+  createBulkResturant = AsyncHandler(async (req: Request, res: Response) => {
       const { restaurants } = req.body;
 
       if (!Array.isArray(restaurants)) {
@@ -52,25 +65,17 @@ class RestaurantController {
           : HTTP_STATUS.PARTIAL_SUCCESS;
 
       return ApiResponse.success(res, statusCode, MESSAGES.CREATED, result);
-    } catch (error: any) {
-      return ApiResponse.error(
-        res,
-        HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        MESSAGES.INTERNAL_SERVER_ERROR,
-      );
-    }
-  };
+  });
 
   // look this in later
-  getAllRestaurant = async (req: Request, res: Response) => {
+  getAllRestaurant = AsyncHandler(async (req: Request, res: Response) => {
     // try {
     //     const {limit, skip}
     // } catch (error) {
     // }
-  };
+  });
 
-  updateRestaurant = async (req: Request, res: Response) => {
-    try {
+  updateRestaurant = AsyncHandler(async (req: Request, res: Response) => {
       const id: string = req.params.id as string;
       const updateData = req.body;
       const restaurant = await this.restaurantService.updateRestaurant(
@@ -83,17 +88,9 @@ class RestaurantController {
         MESSAGES.UPDATED,
         restaurant,
       );
-    } catch (error: any) {
-      return ApiResponse.error(
-        res,
-        HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        MESSAGES.INTERNAL_SERVER_ERROR,
-      );
-    }
-  };
+  });
 
-  deleteRestaurant = async (req: Request, res: Response) => {
-    try {
+  deleteRestaurant = AsyncHandler( async (req: Request, res: Response) => {
       const id: string = req.params.id as string;
       const restaurant = await this.restaurantService.deletRestaurant(id);
       return ApiResponse.success(
@@ -102,17 +99,9 @@ class RestaurantController {
         MESSAGES.DELETED,
         restaurant,
       );
-    } catch (error: any) {
-      return ApiResponse.error(
-        res,
-        HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        MESSAGES.INTERNAL_SERVER_ERROR,
-      );
-    }
-  };
+  });
 
-  deleteBulkResturant = async (req: Request, res: Response) => {
-    try {
+  deleteBulkResturant = AsyncHandler(async (req: Request, res: Response) => {
       const { ids } = req.body;
 
       if (!Array.isArray(ids)) {
@@ -135,14 +124,7 @@ class RestaurantController {
         MESSAGES.BULK_DELETED,
         result,
       );
-    } catch (error: any) {
-      return ApiResponse.error(
-        res,
-        HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        MESSAGES.INTERNAL_SERVER_ERROR,
-      );
-    }
-  };
+  });
 }
 
 export default RestaurantController;
