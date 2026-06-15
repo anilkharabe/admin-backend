@@ -13,9 +13,11 @@ const menuCategorySchema = new mongoose.Schema<MenuCategoryInterface>({
     type: String,
     minLength: [10, "Name must be at least 10 characters"],
     maxLength: [100, "Name must be at exceed 100 characters"],
+    required: true
   },
   category:{
-    type: String
+    type: String,
+    required: true
   },
   restaurantId:{
     type: mongoose.Schema.Types.ObjectId,

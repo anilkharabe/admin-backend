@@ -27,6 +27,8 @@ const userSchema = new mongoose.Schema<UserInterface>({
       values: ["ADMIN", "RES_OWNER"],
       message:"Role is not valid"
     },
+    default: "ADMIN",
+    required: true
   },
   status:{
     type: String,
@@ -35,6 +37,7 @@ const userSchema = new mongoose.Schema<UserInterface>({
       values: ["ACTIVE", "INACTIVE", "PENDING", 'BLOCKED'],
       message:"status is not valid"
     },
+    required: true
   },
   phone:{
     type: Number,

@@ -12,27 +12,6 @@ class RestaurantController {
     this.restaurantService = new RestaurantService();
   }
 
-  // createResturant = async (req: Request, res: Response) => {
-  //   try {
-  //     const restaurantData = req.body;
-  //     const restaurant =
-  //       await this.restaurantService.createResturant(restaurantData);
-
-  //     return ApiResponse.success(
-  //       res,
-  //       HTTP_STATUS.CREATED,
-  //       MESSAGES.CREATED,
-  //       restaurant,
-  //     );
-  //   } catch (error: any) {
-  //     return ApiResponse.error(
-  //       res,
-  //       HTTP_STATUS.INTERNAL_SERVER_ERROR,
-  //       MESSAGES.INTERNAL_SERVER_ERROR,
-  //     );
-  //   }
-  // };
-
    createResturant = AsyncHandler(async (req: Request, res: Response) => {
       const restaurantData = req.body;
       const restaurant =
@@ -69,10 +48,8 @@ class RestaurantController {
 
   // look this in later
   getAllRestaurant = AsyncHandler(async (req: Request, res: Response) => {
-    // try {
-    //     const {limit, skip}
-    // } catch (error) {
-    // }
+    
+    await this.restaurantService.getAllRestaurants()
   });
 
   updateRestaurant = AsyncHandler(async (req: Request, res: Response) => {

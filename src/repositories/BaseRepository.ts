@@ -8,7 +8,6 @@ class BaseRepository {
         const {sort, limit, skip, populate, select} = options;
 
         let query = this.model.find(filter);
-
     
         if(select) query = query.select(select);
         if(sort) query = query.sort(sort);    

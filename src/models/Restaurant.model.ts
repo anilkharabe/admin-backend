@@ -10,6 +10,12 @@ const restaurantSchema = new mongoose.Schema<RestaurantInterface>({
     trim: true
   },
   address:{
+    addressLane:{
+      type: String,
+      minLength: [3, "City must be at least 3 characters"],
+      maxLength: [40, "City must be at exceed 40 characters"],
+      trim: true
+    },
     city:{
       required:[true, 'City is required'],
       type: String,
@@ -25,6 +31,14 @@ const restaurantSchema = new mongoose.Schema<RestaurantInterface>({
     },
     pincode:{
       type: Number
+    },
+    latitude:{
+      type: Number,
+      required: true
+    },
+    longitude:{
+      type: Number,
+      required: true
     }
   },
   cuisine:{
@@ -33,7 +47,8 @@ const restaurantSchema = new mongoose.Schema<RestaurantInterface>({
   },
   phone:{
     type: Number,
-    match: [/^(?:\+91[\s-]?|91[\s-]?|0)?[6-9]\d{9}$/, 'Please enter valid phone number']
+    match: [/^(?:\+91[\s-]?|91[\s-]?|0)?[6-9]\d{9}$/, 'Please enter valid phone number'],
+    required: true
   },
   rating:{
     type: Number,
@@ -44,6 +59,7 @@ const restaurantSchema = new mongoose.Schema<RestaurantInterface>({
     type: String,
     minLength: [10, "Name must be at least 10 characters"],
     maxLength: [100, "Name must be at exceed 100 characters"],
+    required: true
   },
   offers:{
     type: String
@@ -52,10 +68,12 @@ const restaurantSchema = new mongoose.Schema<RestaurantInterface>({
     type: Number
   },
   openingTime:{
-    type: Date
+    type: Date,
+    required: true
   },
   closingTime:{
-    type: Date
+    type: Date,
+    required: true
   },
   isApproved:{
     type: Boolean,

@@ -7,9 +7,9 @@ const menuCategoryValidatorSchema = Joi.object({
         "string.max": "Name cannot exceed 40 characters",
         "any.required": "Name field is required"
     }),
-    description: Joi.string().min(10).max(100),
-    category: Joi.string(),
-    restaurantId: Joi.string()
+    description: Joi.string().min(10).max(100).required(),
+    category: Joi.string().required(),
+    restaurantId: Joi.string().required()
 });
 
 export default menuCategoryValidatorSchema;

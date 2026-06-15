@@ -1,7 +1,6 @@
 import RestaurantRepository from "../repositories/RestaurantRepository";
 import ConflictError from '../utils/errors/ConflictError';
 import NotFoundError from '../utils/errors/NotFoundError';
-import InternalServerError from '../utils/errors/InternalServerError';
 import MESSAGES from "../constants/Messages";
 
 /**
@@ -57,47 +56,33 @@ class RestaurantService{
     }
 
     async getAllRestaurants(filter: any={}, options: any={}){
-        try {
-            const restaurants = await this.restaurantRepository.findAll(filter, options);
-            return restaurants;
-        } catch (error: any) {
-            throw new NotFoundError(MESSAGES.NOT_FOUND);
-        }
+        const restaurants = await this.restaurantRepository.findAll(filter, options);
+        return restaurants;
+       
     }
 
     async getRestaurantById(id: string){
-        try {
-            const resturant = await this.restaurantRepository.findById(id);
-            if(!resturant){
-                throw new NotFoundError(MESSAGES.NOT_FOUND);
-            }
-            return resturant;
-        } catch (error: any) {
-            throw new InternalServerError(MESSAGES.INTERNAL_SERVER_ERROR);
+        const resturant = await this.restaurantRepository.findById(id);
+        if(!resturant){
+            throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
+        return resturant;
+       
     }
 
     async updateRestaurant(id: string, updatedData:any){
-        try {
-            const resturant = await this.restaurantRepository.updateById(id, updatedData);
-            if(!resturant){
-                throw new NotFoundError(MESSAGES.NOT_FOUND);
-            }
-            return resturant;
-        } catch (error: any) {
-            throw new InternalServerError(MESSAGES.INTERNAL_SERVER_ERROR)
+        const resturant = await this.restaurantRepository.updateById(id, updatedData);
+        if(!resturant){
+            throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
+        return resturant;
+        
     }
 
     async deletRestaurant(id: string){
-        try {
-            const restaurant = await this.restaurantRepository.deleteById(id);
-            if(!restaurant){
-                throw new NotFoundError(MESSAGES.NOT_FOUND);
-            }
-        } catch (error: any) {
-            throw new InternalServerError(MESSAGES.INTERNAL_SERVER_ERROR)
-
+        const restaurant = await this.restaurantRepository.deleteById(id);
+        if(!restaurant){
+            throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
     }
 

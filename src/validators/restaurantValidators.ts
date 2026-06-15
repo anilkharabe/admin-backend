@@ -8,21 +8,24 @@ const restaurantValidatorSchema = Joi.object({
         "any.required": "Name field is required"
     }),
     address: Joi.object({
+        addressLane: Joi.string().min(3).max(40).trim(),
         city: Joi.string().min(3).max(40).trim().required(),
         state: Joi.string().min(3).max(40).trim(),
-        pincode: Joi.number()
+        pincode: Joi.number(),
+        latitude: Joi.number().required(),
+        longitude: Joi.number().required(),
     }),
-    cuisine: Joi.array().items(Joi.string()).default([]),
-    phone: Joi.number(),
+    cuisine: Joi.array().items(Joi.string()).default([]).required(),
+    phone: Joi.number().required(),
     rating: Joi.number().min(0).max(5),
-    description: Joi.string().min(10).max(100),
+    description: Joi.string().min(10).max(100).required(),
     offers: Joi.string(),
     ETA: Joi.number(),
-    openingTime: Joi.date(),
-    closingTime: Joi.date(),
-    isApproved: Joi.boolean(),
+    openingTime: Joi.date().required(),
+    closingTime: Joi.date().required(),
+    isApproved: Joi.boolean().default(false),
     category: Joi.string(),
-    ownerId: Joi.string()
+    ownerId: Joi.string().required()
 });
 
 export default restaurantValidatorSchema;
