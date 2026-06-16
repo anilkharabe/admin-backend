@@ -49,7 +49,47 @@ class RestaurantController {
   // look this in later
   getAllRestaurant = AsyncHandler(async (req: Request, res: Response) => {
     
-    await this.restaurantService.getAllRestaurants()
+    const {
+      page = '1', 
+      limit = '10',
+      search,
+      city,
+      isApproved,
+      sortBy = 'name',
+      sortOrder = 'asc'
+    } = req.query;
+
+    const filter: any = {};
+    
+    if(search){
+      filter.name = {
+        $regex: search,
+        $options: 'i'
+      }
+    }
+
+    if(city){
+      filter["address.city"] = city;
+    }
+
+    if(isApproved){
+      filter.isApproved = isApproved;
+    }
+
+    const options = {
+      skip:(Number(page) - 1 ) * Number(limit),
+      limit: Number(limit),
+
+      sort: { [sortBy as string]: sortOrder === 'asc' ? 1 : -1 }
+    }
+    const restaurants =  await this.restaurantService.getAllRestaurants(filter, options);
+
+    return ApiResponse.success(
+        res,
+        HTTP_STATUS.OK,
+        MESSAGES.FETCHED,
+        restaurants,
+      );
   });
 
   updateRestaurant = AsyncHandler(async (req: Request, res: Response) => {

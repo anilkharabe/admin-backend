@@ -17,8 +17,6 @@ const userSchema = new mongoose.Schema<UserInterface>({
   },
   password:{
     type: String,
-    minLength: [6, "Name must be at least 6 characters"],
-    maxLength: [20, "Name must be at exceed 20 characters"],
     required: [true, "Password is required"]
   },
   role:{

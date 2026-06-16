@@ -58,7 +58,6 @@ class RestaurantService{
     async getAllRestaurants(filter: any={}, options: any={}){
         const restaurants = await this.restaurantRepository.findAll(filter, options);
         return restaurants;
-       
     }
 
     async getRestaurantById(id: string){

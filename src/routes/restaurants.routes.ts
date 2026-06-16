@@ -12,5 +12,6 @@ router.post('/create/bulk', restaurantController.createBulkResturant)
 router.put('/:id', validateMiddleware.validate(restaurantValidateSchema) ,restaurantController.updateRestaurant);
 router.delete('/delete/:id', restaurantController.deleteRestaurant);
 router.delete('/delete/bulk', restaurantController.deleteBulkResturant)
+router.get('/', restaurantController.getAllRestaurant)
 
 export default router;

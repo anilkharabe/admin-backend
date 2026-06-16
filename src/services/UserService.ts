@@ -20,12 +20,14 @@ class UserService{
      */
     async createUser(UserData: any){
         const existingUser = await this.userRepository.findByEmail(UserData.email);
+        console.log("existingUser", existingUser);
         if(existingUser){
             // throw new Error('User with this email is already created');
             throw new ConflictError(MESSAGES.ALREADY_EXISTS);
         }
 
         const savedUser = await this.userRepository.create(UserData);
+        console.log('savedUser',savedUser)
         return savedUser;
     }
 
@@ -37,6 +39,14 @@ class UserService{
 
     async getUserById(id: string){
         const user = await this.userRepository.findById(id);
+        if(!user){
+            throw new NotFoundError(MESSAGES.NOT_FOUND);
+        }
+        return user;
+    }
+
+    async getUserByEmail(email: string){
+        const user = await this.userRepository.findByEmail(email);
         if(!user){
             throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
