@@ -6,15 +6,6 @@ class RestaurantRepository extends BaseRepository{
         super(ResturantModel)
     }
 
-    /**
-     * This method returns Restaurant by restaurant name
-     * @param name - Restaurant name
-     * @returns - returning single restaurant
-     */
-
-    async findByName(name: string){
-        return await ResturantModel.findOne({name})
-    }
 }
 
 export default RestaurantRepository;

@@ -64,6 +64,10 @@ class BaseRepository {
     async count(filters={}){
         return await this.model.countDocuments(filters)
     }
+
+    async findByName(name: string){
+        return await this.model.findOne({name})
+    }
 }
 
 export default BaseRepository;
