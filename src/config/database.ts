@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 class DatabaseConfig {
   static async connect(): Promise<void> {
     try {
-        const mongoURL = process.env.MONGODB_CONNECT_URL || 'mongodb://localhost:27017/studentDB';
+        const mongoURL = process.env.MONGODB_CONNECT_URL || 'mongodb://localhost:27017/restaurant-management';
         if(!mongoURL){
             throw new Error('Mongo connection URL is not defined in environment variables')
         }
