@@ -19,7 +19,7 @@ const userValidatorSchema = Joi.object({
 
     role: Joi.string().valid("ADMIN", "RES_OWNER").required().default('ADMIN'),
 
-    status: Joi.string().valid("ACTIVE", "INACTIVE", "PENDING", 'BLOCKED').required().default('INACTIVE'),
+    status: Joi.string().valid("ACTIVE", "INACTIVE", "PENDING", 'BLOCKED').default('INACTIVE'),
 
     phone: Joi.number(),
 });

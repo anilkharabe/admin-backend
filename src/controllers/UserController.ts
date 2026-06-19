@@ -1,10 +1,12 @@
 import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
 import UserService from "../services/UserService";
 import { Request, Response } from "express";
 import ApiResponse from "../utils/ApiResponse";
 import HTTP_STATUS from "../constants/HttpStatus";
 import MESSAGES from "../constants/Messages";
 import AsyncHandler from '../middleware/AsyncHandler';
+const JWT_SECRET = "your-secret-key";
 
 
 class UserController {
@@ -105,11 +107,20 @@ class UserController {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if(isMatch){
+      const token = jwt.sign(
+          {
+            userId: user._id,
+          },
+          JWT_SECRET,
+          {
+            expiresIn: "1h"
+          }
+        );
       return ApiResponse.success(
           res,
           HTTP_STATUS.OK,
           MESSAGES.FETCHED,
-          user,
+          {token},
         );
     }else{
       res.status(400).json({
