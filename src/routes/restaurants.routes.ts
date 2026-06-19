@@ -7,11 +7,11 @@ const router = express.Router();
 
 const restaurantController = new RestaurantController();
 
-router.post('/create', validateMiddleware.validate(restaurantValidateSchema) , restaurantController.createResturant);
-router.post('/create/bulk', restaurantController.createBulkResturant)
+router.post('/create', validateMiddleware.validate(restaurantValidateSchema) , restaurantController.createRestaurant);
+router.post('/create/bulk', restaurantController.createBulkRestaurant)
 router.put('/:id', validateMiddleware.validate(restaurantValidateSchema) ,restaurantController.updateRestaurant);
+router.delete('/delete/bulk', restaurantController.deleteBulkRestaurant)
 router.delete('/delete/:id', restaurantController.deleteRestaurant);
-router.delete('/delete/bulk', restaurantController.deleteBulkResturant)
 router.get('/', restaurantController.getAllRestaurant)
 
 export default router;

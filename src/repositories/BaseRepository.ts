@@ -54,7 +54,7 @@ class BaseRepository {
             ...options
         }
 
-        return await this.model.findByIdAndUpdate(id,{...updateData, updatedAt: new Date()})
+        return await this.model.findByIdAndUpdate(id,{...updateData, updatedAt: new Date()}, defaultOptions)
     }
 
     async deleteById(id: string){

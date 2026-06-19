@@ -9,7 +9,7 @@ import menuItemRouter from './menuItem.routes';
 
 router.use('/restaurants', restaurantRouter);
 router.use('/users', userRouter);
-router.use('/menuCategies', menuCategoryRouter);
+router.use('/menuCategories', menuCategoryRouter);
 router.use('/menuItems', menuItemRouter);
 
 export default router;

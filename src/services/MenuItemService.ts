@@ -19,14 +19,14 @@ class MenuItemService{
      * @returns 
      */
     async createMenuItem(menuItemData: any){
-        const existingmenuItem = await this.menuItemRepository.findByName(menuItemData.name);
-        if(existingmenuItem){
+        const existingMenuItem = await this.menuItemRepository.findByName(menuItemData.name);
+        if(existingMenuItem){
             // throw new Error('Menu category with this name is already created');
             throw new ConflictError(MESSAGES.ALREADY_EXISTS);
         }
 
-        const SavedMenuItem = await this.menuItemRepository.create(menuItemData);
-        return SavedMenuItem;
+        const savedMenuItem = await this.menuItemRepository.create(menuItemData);
+        return savedMenuItem;
        
     }
 
@@ -56,8 +56,8 @@ class MenuItemService{
     }
 
     async getAllMenuItems(filter: any={}, options: any={}){
-        const restaurants = await this.menuItemRepository.findAll(filter, options);
-        return restaurants;
+        const menuItems = await this.menuItemRepository.findAll(filter, options);
+        return menuItems;
     }
 
     async getMenuItemById(id: string){
@@ -77,10 +77,11 @@ class MenuItemService{
     }
 
     async deleteMenuItem(id: string){
-        const restaurant = await this.menuItemRepository.deleteById(id);
-        if(!restaurant){
+        const menuItem = await this.menuItemRepository.deleteById(id);
+        if(!menuItem){
             throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
+        return menuItem;
     }
 
     async deleteBulkMenuItems(ids: string[]){

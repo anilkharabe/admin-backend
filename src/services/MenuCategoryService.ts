@@ -25,8 +25,8 @@ class MenuCategoryService{
             throw new ConflictError(MESSAGES.ALREADY_EXISTS);
         }
 
-        const SavedMenuCategory = await this.menuCategoryRepository.create(menuCategoryData);
-        return SavedMenuCategory;
+        const savedMenuCategory = await this.menuCategoryRepository.create(menuCategoryData);
+        return savedMenuCategory;
        
     }
 
@@ -77,10 +77,11 @@ class MenuCategoryService{
     }
 
     async deleteMenuCategory(id: string){
-        const restaurant = await this.menuCategoryRepository.deleteById(id);
-        if(!restaurant){
+        const menuCategory = await this.menuCategoryRepository.deleteById(id);
+        if(!menuCategory){
             throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
+        return menuCategory;
     }
 
     async deleteBulkMenuCategories(ids: string[]){

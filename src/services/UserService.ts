@@ -61,11 +61,12 @@ class UserService{
         return user;
     }
 
-    async deletUser(id: string){
+    async deleteUser(id: string){
         const user = await this.userRepository.deleteById(id);
         if(!user){
             throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
+        return user;
     }
 }
 

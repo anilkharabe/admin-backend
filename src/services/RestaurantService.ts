@@ -18,10 +18,10 @@ class RestaurantService{
      * @param {*} - Restaurant Data
      * @returns 
      */
-    async createResturant(restaurantData: any){
-        const existingResturant = await this.restaurantRepository.findByName(restaurantData.name);
-        if(existingResturant){
-            // throw new Error('Restuant with this name is already created');
+    async createRestaurant(restaurantData: any){
+        const existingRestaurant = await this.restaurantRepository.findByName(restaurantData.name);
+        if(existingRestaurant){
+            // throw new Error('Restaurant with this name is already created');
             throw new ConflictError(MESSAGES.ALREADY_EXISTS);
         }
 
@@ -43,8 +43,8 @@ class RestaurantService{
 
         for(const restaurant of restaurantsData){
             try {
-                const createdResturant = await this.createResturant(restaurant);
-                result.created.push(createdResturant);
+                const createdRestaurant = await this.createRestaurant(restaurant);
+                result.created.push(createdRestaurant);
             } catch (error: any) {
                 result.failed.push({
                     data: restaurant,
@@ -61,28 +61,29 @@ class RestaurantService{
     }
 
     async getRestaurantById(id: string){
-        const resturant = await this.restaurantRepository.findById(id);
-        if(!resturant){
+        const restaurant = await this.restaurantRepository.findById(id);
+        if(!restaurant){
             throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
-        return resturant;
+        return restaurant;
        
     }
 
     async updateRestaurant(id: string, updatedData:any){
-        const resturant = await this.restaurantRepository.updateById(id, updatedData);
-        if(!resturant){
+        const restaurant = await this.restaurantRepository.updateById(id, updatedData);
+        if(!restaurant){
             throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
-        return resturant;
+        return restaurant;
         
     }
 
-    async deletRestaurant(id: string){
+    async deleteRestaurant(id: string){
         const restaurant = await this.restaurantRepository.deleteById(id);
         if(!restaurant){
             throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
+        return restaurant;
     }
 
     async deleteBulkRestaurants(ids: string[]){
@@ -98,8 +99,8 @@ class RestaurantService{
 
         for(const id of ids){
             try {
-                const deletedResturant = await this.deletRestaurant(id)
-                result.deleted.push(deletedResturant)
+                const deletedRestaurant = await this.deleteRestaurant(id)
+                result.deleted.push(deletedRestaurant)
             } catch (error: any) {
                 result.failed.push({
                     id,

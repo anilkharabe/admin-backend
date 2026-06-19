@@ -89,6 +89,6 @@ const restaurantSchema = new mongoose.Schema<RestaurantInterface>({
   }
 });
 
-const Restaurant = mongoose.model<RestaurantInterface>("Resturant", restaurantSchema);
+const Restaurant = mongoose.model<RestaurantInterface>("Restaurant", restaurantSchema);
 
 export default Restaurant;

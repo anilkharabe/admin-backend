@@ -1,4 +1,4 @@
-import RestaurantService from "../services/ResturantService";
+import RestaurantService from "../services/RestaurantService";
 import { Request, Response } from "express";
 import ApiResponse from "../utils/ApiResponse";
 import HTTP_STATUS from "../constants/HttpStatus";
@@ -12,10 +12,10 @@ class RestaurantController {
     this.restaurantService = new RestaurantService();
   }
 
-   createResturant = AsyncHandler(async (req: Request, res: Response) => {
+   createRestaurant = AsyncHandler(async (req: Request, res: Response) => {
       const restaurantData = req.body;
       const restaurant =
-        await this.restaurantService.createResturant(restaurantData);
+        await this.restaurantService.createRestaurant(restaurantData);
 
       return ApiResponse.success(
         res,
@@ -25,7 +25,7 @@ class RestaurantController {
       );
   });
 
-  createBulkResturant = AsyncHandler(async (req: Request, res: Response) => {
+  createBulkRestaurant = AsyncHandler(async (req: Request, res: Response) => {
       const { restaurants } = req.body;
 
       if (!Array.isArray(restaurants)) {
@@ -109,7 +109,7 @@ class RestaurantController {
 
   deleteRestaurant = AsyncHandler( async (req: Request, res: Response) => {
       const id: string = req.params.id as string;
-      const restaurant = await this.restaurantService.deletRestaurant(id);
+      const restaurant = await this.restaurantService.deleteRestaurant(id);
       return ApiResponse.success(
         res,
         HTTP_STATUS.OK,
@@ -118,7 +118,7 @@ class RestaurantController {
       );
   });
 
-  deleteBulkResturant = AsyncHandler(async (req: Request, res: Response) => {
+  deleteBulkRestaurant = AsyncHandler(async (req: Request, res: Response) => {
       const { ids } = req.body;
 
       if (!Array.isArray(ids)) {

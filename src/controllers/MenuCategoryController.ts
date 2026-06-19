@@ -26,9 +26,9 @@ class MenuCategoryController {
   });
 
   createBulkMenuCategory = AsyncHandler(async (req: Request, res: Response) => {
-      const { menuCategorys } = req.body;
+      const menuCategories = req.body.menuCategories ?? req.body.menuCategorys;
 
-      if (!Array.isArray(menuCategorys)) {
+      if (!Array.isArray(menuCategories)) {
         return ApiResponse.error(
           res,
           HTTP_STATUS.BAD_REQUEST,
@@ -37,7 +37,7 @@ class MenuCategoryController {
       }
 
       const result =
-        await this.menuCategoryService.createBulkMenuCategory(menuCategorys);
+        await this.menuCategoryService.createBulkMenuCategory(menuCategories);
       const statusCode =
         result.failed.length === 0
           ? HTTP_STATUS.CREATED
@@ -72,13 +72,13 @@ class MenuCategoryController {
 
       sort: { [sortBy as string]: sortOrder === 'asc' ? 1 : -1 }
     }
-    const menuCategorys =  await this.menuCategoryService.getAllMenuCategories(filter, options);
+    const menuCategories =  await this.menuCategoryService.getAllMenuCategories(filter, options);
 
     return ApiResponse.success(
         res,
         HTTP_STATUS.OK,
         MESSAGES.FETCHED,
-        menuCategorys,
+        menuCategories,
       );
   });
 

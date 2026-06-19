@@ -1,9 +1,9 @@
 import BaseRepository from "./BaseRepository";
-import ResturantModel from '../models/Restaurant.model';
+import RestaurantModel from '../models/Restaurant.model';
 
 class RestaurantRepository extends BaseRepository{
     constructor(){
-        super(ResturantModel)
+        super(RestaurantModel)
     }
 
 }
