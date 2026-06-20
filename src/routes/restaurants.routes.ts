@@ -9,8 +9,8 @@ const router = express.Router();
 
 const restaurantController = new RestaurantController();
 
-router.post('/create',  authMiddleware, roleMiddleware('RES_OWNER'), validateMiddleware.validate(restaurantValidateSchema) , restaurantController.createRestaurant);
-router.post('/create/bulk', restaurantController.createBulkRestaurant)
+router.post('/create',  authMiddleware, roleMiddleware('ADMIN'), validateMiddleware.validate(restaurantValidateSchema) , restaurantController.createRestaurant);
+router.post('/create/bulk', authMiddleware, roleMiddleware('ADMIN'), restaurantController.createBulkRestaurant)
 router.put('/:id', validateMiddleware.validate(restaurantValidateSchema) ,restaurantController.updateRestaurant);
 router.delete('/delete/bulk', restaurantController.deleteBulkRestaurant)
 router.delete('/delete/:id', restaurantController.deleteRestaurant);
