@@ -110,6 +110,7 @@ class UserController {
       const token = jwt.sign(
           {
             userId: user._id,
+             role: user.role
           },
           JWT_SECRET,
           {
