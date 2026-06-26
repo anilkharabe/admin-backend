@@ -14,5 +14,6 @@ router.put('/:id', validateMiddleware.validate(restaurantValidateSchema) ,restau
 router.delete('/delete/bulk', restaurantController.deleteBulkRestaurant)
 router.delete('/delete/:id', restaurantController.deleteRestaurant);
 router.get('/', restaurantController.getAllRestaurant)
+router.get('/res/:id', restaurantController.getRestaurant)
 
 export default router;

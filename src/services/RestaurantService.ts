@@ -2,6 +2,7 @@ import RestaurantRepository from "../repositories/RestaurantRepository";
 import ConflictError from '../utils/errors/ConflictError';
 import NotFoundError from '../utils/errors/NotFoundError';
 import MESSAGES from "../constants/Messages";
+import redisClient from '../config/redis'
 
 /**
  * Bussiness logic
@@ -24,8 +25,35 @@ class RestaurantService{
             // throw new Error('Restaurant with this name is already created');
             throw new ConflictError(MESSAGES.ALREADY_EXISTS);
         }
-
+        
+        // mongo db
         const savedRestaurant = await this.restaurantRepository.create(restaurantData);
+
+        //redis db
+         try {
+            const restaurant = savedRestaurant.toObject();
+
+            const { _id, ...data } = restaurant;
+
+            const hash: Record<string, string> = {};
+
+            Object.entries(data).forEach(([key, value]) => {
+                hash[key] =
+                    value === null || value === undefined
+                        ? ""
+                        : typeof value === "object"
+                        ? JSON.stringify(value)
+                        : String(value);
+            });
+
+            await redisClient.hSet(`res:${_id}`, hash);
+            await redisClient.expire(`res:${_id}`, 3600);
+
+            console.log("Saved in Redis");
+        } catch (err) {
+            console.error("Redis Error:", err);
+        }
+
         return savedRestaurant;
        
     }
@@ -60,13 +88,61 @@ class RestaurantService{
         return restaurants;
     }
 
-    async getRestaurantById(id: string){
+    async getRestaurantById(id: string) {
+        const cacheKey = `res:${id}`;
+
+        // 1. Check Redis
+        const cachedRestaurant = await redisClient.hGetAll(cacheKey);
+
+        if (Object.keys(cachedRestaurant).length > 0) {
+            console.log("Returning restaurant from Redis");
+
+            // Convert JSON strings back to objects if needed
+            Object.keys(cachedRestaurant).forEach((key) => {
+                try {
+                    cachedRestaurant[key] = JSON.parse(cachedRestaurant[key]);
+                } catch {
+                    // Keep primitive values as strings
+                }
+            });
+
+            return {
+                _id: id,
+                ...cachedRestaurant,
+            };
+        }
+
+        // 2. Cache miss - Fetch from MongoDB
+        console.log("Cache miss. Fetching from MongoDB");
+
         const restaurant = await this.restaurantRepository.findById(id);
-        if(!restaurant){
+
+        if (!restaurant) {
             throw new NotFoundError(MESSAGES.NOT_FOUND);
         }
+
+        // 3. Store in Redis
+        const restaurantObj = restaurant.toObject
+            ? restaurant.toObject()
+            : restaurant;
+
+        const { _id, ...fields } = restaurantObj;
+
+        const hash: Record<string, string> = {};
+
+        Object.entries(fields).forEach(([key, value]) => {
+            hash[key] =
+                value == null
+                    ? ""
+                    : typeof value === "object"
+                    ? JSON.stringify(value)
+                    : String(value);
+        });
+
+        await redisClient.hSet(cacheKey, hash);
+        await redisClient.expire(cacheKey, 3600); // 1 hour
+
         return restaurant;
-       
     }
 
     async updateRestaurant(id: string, updatedData:any){

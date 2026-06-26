@@ -92,6 +92,19 @@ class RestaurantController {
       );
   });
 
+  getRestaurant = AsyncHandler(async (req: Request, res: Response) => {
+    
+    const id: string = req.params.id as string;
+    const restaurants =  await this.restaurantService.getRestaurantById(id);
+
+    return ApiResponse.success(
+        res,
+        HTTP_STATUS.OK,
+        MESSAGES.FETCHED,
+        restaurants,
+      );
+  });
+
   updateRestaurant = AsyncHandler(async (req: Request, res: Response) => {
       const id: string = req.params.id as string;
       const updateData = req.body;
