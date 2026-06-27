@@ -7,10 +7,10 @@ import app from "./app";
 
 const startServer = async () => {
     try {
-        await DatabaseConfig.connect();
+        // await DatabaseConfig.connect();
 
         // console.log("Database connected", config.port);
-        await connectRedis();
+        // await connectRedis();
 
         app.listen(5000, () => {
             console.log("Server running on port:", 5000);
