@@ -1,7 +1,7 @@
 // import "./src/config/env";
 import DatabaseConfig from "./src/config/database";
 import {connectRedis} from './src/config/redis'
-// import config from "./src/config/index";
+import config from "./src/config/index";
 import app from "./app";
 
 
@@ -9,7 +9,7 @@ const startServer = async () => {
     try {
         await DatabaseConfig.connect();
 
-        // console.log("Database connected", config.port);
+        console.log("Database connected", config.port);
         await connectRedis();
 
         app.listen(5000, () => {
