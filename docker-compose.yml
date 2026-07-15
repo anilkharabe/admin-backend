@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run debug
+    command: npm run dev
 
   mongodb:
     image: mongo:8
